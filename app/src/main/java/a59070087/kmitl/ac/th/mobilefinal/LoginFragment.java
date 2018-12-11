@@ -44,6 +44,15 @@ public class LoginFragment extends Fragment {
 
         pleaseFillIn = getString(R.string.please_fill_in);
         noCredentialFound = getString(R.string.invalid_user_or_pwd);
+        sharedPreferences = getActivity().getSharedPreferences("MOBILEFINAL", Context.MODE_PRIVATE);
+        final String currentUser = sharedPreferences.getString("name", "null");
+
+        if (!currentUser.equals("null")) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_view, new HomeFragment())
+                    .commit();
+        }
 
         initLoginBtn();
         initRegisterLink();
@@ -101,7 +110,6 @@ public class LoginFragment extends Fragment {
             Log.d(TAG, "User found " + cursor_NAME);
             if (USER != null) { USER.close(); }
 
-            sharedPreferences = getActivity().getSharedPreferences("MOBILEFINAL", Context.MODE_PRIVATE);
             sharedPreferences.edit()
                     .putString("user_id", cursor_USER_ID)
                     .putString("name", cursor_NAME)
