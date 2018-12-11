@@ -93,6 +93,10 @@ public class RegisterFragment extends Fragment {
                     Log.d(TAG, "initRegisterBtn: To write to DB");
                     userDB.createRecord(USER_ID, NAME, Integer.parseInt(AGE), PASSWORD);
                     Log.d(TAG, "initRegisterBtn: Wrote to DB");
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new LoginFragment())
+                            .commit();
                 }
             }
         });

@@ -41,6 +41,7 @@ public class UserDB {
         String[] cols = new String[] { userDBHelper.COL_USER_ID, userDBHelper.COL_NAME, userDBHelper.COL_AGE };
         Cursor cursor = db.query(true, userDBHelper.TABLE_NAME, cols, null, null, null, null, null, null);
         if (cursor != null) cursor.moveToFirst();
+        // cursor.close();
         return cursor;
     }
 
