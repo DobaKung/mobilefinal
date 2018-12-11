@@ -1,5 +1,7 @@
 package a59070087.kmitl.ac.th.mobilefinal;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +26,7 @@ public class LoginFragment extends Fragment {
     private String pleaseFillIn, noCredentialFound;
 
     private UserDB userDB;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -68,14 +71,7 @@ public class LoginFragment extends Fragment {
                 if (USER_ID.isEmpty() || PASSWORD.isEmpty()) {
                     Toast.makeText(getContext(), pleaseFillIn, Toast.LENGTH_SHORT).show();
                 } else {
-                    final Cursor USER = userDB.getRecord(USER_ID, PASSWORD);
-                    if (USER != null && USER.getCount() > 0) {
-                        Toast.makeText(getContext(), "User found", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), noCredentialFound, Toast.LENGTH_SHORT).show();
-                    }
-
-                    if (USER != null) { USER.close(); }
+                    logIn(USER_ID, PASSWORD);
                 }
             }
         });
@@ -95,5 +91,26 @@ public class LoginFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    private void logIn(final String USER_ID, final String PASSWORD) {
+        final Cursor USER = userDB.getRecord(USER_ID, PASSWORD);
+        if (USER != null && USER.getCount() > 0) {
+            final String cursor_USER_ID = USER.getString(0);
+            final String cursor_NAME = USER.getString(1);
+            Log.d(TAG, "User found " + cursor_NAME);
+            if (USER != null) { USER.close(); }
+
+            sharedPreferences = getActivity().getSharedPreferences("MOBILEFINAL", Context.MODE_PRIVATE);
+            sharedPreferences.edit()
+                    .putString("user_id", cursor_USER_ID)
+                    .putString("name", cursor_NAME)
+                    .apply();
+
+            // TODO: Go to Home
+        } else {
+            Toast.makeText(getContext(), noCredentialFound, Toast.LENGTH_SHORT).show();
+            if (USER != null) { USER.close(); }
+        }
     }
 }
