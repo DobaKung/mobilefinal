@@ -13,4 +13,6 @@
     <string name="register_name_error">Name must contain one and only one space</string>
     <string name="register_age_error">Age must be between 10-80 inclusively</string>
     <string name="register_pwd_error">Password must be greater 6 characters in length</string>
+
+    <string name="home_hello">Hello %s</string>
 </resources>
