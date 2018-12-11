@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import a59070087.kmitl.ac.th.mobilefinal.db.UserDB;
+
 public class RegisterFragment extends Fragment {
     public static final String TAG = "REGISTER";
 
@@ -18,10 +20,13 @@ public class RegisterFragment extends Fragment {
     private Button _registerBtn;
     private String errUserId, errName, errAge, errPwd;
 
+    private UserDB userDB;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+        userDB = UserDB.getInstance(getContext());
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
@@ -85,7 +90,9 @@ public class RegisterFragment extends Fragment {
                 }
 
                 if (errCount == 0) {
-                    // proceed
+                    Log.d(TAG, "initRegisterBtn: To write to DB");
+                    userDB.createRecord(USER_ID, NAME, Integer.parseInt(AGE), PASSWORD);
+                    Log.d(TAG, "initRegisterBtn: Wrote to DB");
                 }
             }
         });
