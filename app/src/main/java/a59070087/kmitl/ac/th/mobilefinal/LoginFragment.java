@@ -1,5 +1,6 @@
 package a59070087.kmitl.ac.th.mobilefinal;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import a59070087.kmitl.ac.th.mobilefinal.db.UserDB;
+
 public class LoginFragment extends Fragment {
     public static final String TAG = "LOGIN";
 
@@ -20,10 +23,13 @@ public class LoginFragment extends Fragment {
     private TextView _registerLink;
     private String pleaseFillIn, noCredentialFound;
 
+    private UserDB userDB;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
+        userDB = UserDB.getInstance(getContext());
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -62,7 +68,14 @@ public class LoginFragment extends Fragment {
                 if (USER_ID.isEmpty() || PASSWORD.isEmpty()) {
                     Toast.makeText(getContext(), pleaseFillIn, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), noCredentialFound, Toast.LENGTH_SHORT).show();
+                    final Cursor USER = userDB.getRecord(USER_ID, PASSWORD);
+                    if (USER != null && USER.getCount() > 0) {
+                        Toast.makeText(getContext(), "User found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), noCredentialFound, Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (USER != null) { USER.close(); }
                 }
             }
         });
@@ -75,7 +88,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "initRegisterLink: onClick");
-
                 getFragmentManager()
                         .beginTransaction()
                         .addToBackStack(null)

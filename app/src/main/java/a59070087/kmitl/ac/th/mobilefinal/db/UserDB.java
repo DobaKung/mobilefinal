@@ -41,7 +41,16 @@ public class UserDB {
         String[] cols = new String[] { userDBHelper.COL_USER_ID, userDBHelper.COL_NAME, userDBHelper.COL_AGE };
         Cursor cursor = db.query(true, userDBHelper.TABLE_NAME, cols, null, null, null, null, null, null);
         if (cursor != null) cursor.moveToFirst();
-        // cursor.close();
+        return cursor;
+    }
+
+    public Cursor getRecord(String userId, String pwd) {
+        Log.d(TAG, "getRecord: " + userId + " " + pwd);
+        final String[] COLS = new String[] { userDBHelper.COL_USER_ID };
+        final String WHERE = userDBHelper.COL_USER_ID + "=? AND " + userDBHelper.COL_PWD + "=?";
+        final String[] ARGS = new String[] { userId, pwd };
+        Cursor cursor = db.query(true, userDBHelper.TABLE_NAME, COLS, WHERE, ARGS, null, null, null, null);
+        if (cursor != null) cursor.moveToFirst();
         return cursor;
     }
 
