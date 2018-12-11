@@ -107,7 +107,10 @@ public class LoginFragment extends Fragment {
                     .putString("name", cursor_NAME)
                     .apply();
 
-            // TODO: Go to Home
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_view, new HomeFragment())
+                    .commit();
         } else {
             Toast.makeText(getContext(), noCredentialFound, Toast.LENGTH_SHORT).show();
             if (USER != null) { USER.close(); }
