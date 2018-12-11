@@ -41,7 +41,7 @@
                 android:drawableStart="@drawable/ic_person_black_24dp"
                 android:ems="10"
                 android:hint="@string/username"
-                android:inputType="textPersonName"
+                android:inputType="text"
                 tools:layout_editor_absoluteX="98dp"
                 tools:layout_editor_absoluteY="96dp" />
 
@@ -63,7 +63,7 @@
                 android:ems="10"
                 android:hint="@string/age"
                 android:importantForAutofill="no"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/register_inp_pwd"
